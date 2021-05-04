@@ -10,7 +10,7 @@ services:
   redis:
     image: 'redis:latest'
 
-  server:
+  api:
     build:
       dockerfile: Dockerfile.dev
       context: ./server
