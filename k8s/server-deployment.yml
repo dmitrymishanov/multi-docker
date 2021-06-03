@@ -30,3 +30,11 @@ spec:
               value: 5432
             - name: PGDATABASE
               value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                # указываем, что надо взять пароль из созданного секрета
+                secretKeyRef:
+                  name: pgpassword
+                  # название ключа в секрете случайно совпадает с именем переменной окружения
+                  # но это ничего не значит
+                  key: PGPASSWORD
