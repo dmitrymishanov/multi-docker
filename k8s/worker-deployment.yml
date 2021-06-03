@@ -15,3 +15,8 @@ spec:
       containers:
         - name: worker
           image: dmitrymishanov/worker
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service  # k8s может подключаться по имени объекта
+            - name: REDIS_PORT
+              value: 6379
