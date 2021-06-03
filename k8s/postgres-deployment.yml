@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: postgres-deployment
 spec:
+  # должна быть всегда одна реплика, т.к. несколько БД не смогут нормально делить один PersistentVolume
   replicas: 1
   selector:
     matchLabels:
@@ -12,8 +13,19 @@ spec:
       labels:
         component: postgres
     spec:
+      # указываем PVC для перманентного хранения данных БД вне пода
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
       containers:
         - name: postgres
           image: postgres
           ports:
             - containerPort: 5432
+
+          volumeMounts:
+            - name: postgres-storage  # указывает по имени на созданный выше storage
+              # папка внутри контейнера, которая будет ссылкаться на внешний storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
